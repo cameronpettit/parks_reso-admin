@@ -1,0 +1,51 @@
+@import '~assets/styles/base/base.scss';
+
+.login-container {
+  background-color: $white;
+  /* fill the entire viewport and offset the fixed header and footer height (68px + 37px = 105px;) */  
+  min-height: calc(100vh - 105px)
+}
+
+.login-form {
+  background: $white;
+  max-width: 50rem;
+  height: fit-content;
+}
+
+@media screen and (min-width: 768px) {
+  .login-container {
+    background: $lightgray;
+  }
+  .login-form {
+    border: 1px solid $login-page-form-border;
+    width: 75%;
+  }
+}
+
+.btn-login {
+  background: $primary;
+  color: $white;
+  margin-top: 0.75rem;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.btn-login,
+a.reg-link {
+  width: 18rem;
+  max-width: 100%;
+}
+
+a.reg-link {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  margin-top: 0.25rem;
+  text-decoration: underline;
+
+  span.material-icons {
+    margin-right: 4px;
+  }
+}
