@@ -18,8 +18,16 @@ import { Constants } from 'src/app/shared/utils/constants';
 })
 export class MetricsFilterComponent extends BaseFormComponent {
   public params;
+  public parkFacilitiesList;
   public timeSpanOptions = ['year', 'month', 'week'];
   public timeSpanLabels = ['12M', '30D', '7D'];
+  public parkOptions = [];
+  public facilityOptions = [];
+  public fileTypeOptions = [
+    { value: 'pdf', display: 'PDF' },
+    { value: 'csv', display: 'CSV' },
+    { value: 'json', display: 'JSON' },
+  ];
   constructor(
     protected formBuilder: UntypedFormBuilder,
     protected router: Router,
@@ -28,6 +36,16 @@ export class MetricsFilterComponent extends BaseFormComponent {
     protected changeDetector: ChangeDetectorRef
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
+    this.subscriptions.add(
+      this.dataService
+        .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
+        .subscribe((res) => {
+          if (res) {
+            this.parkFacilitiesList = res;
+            this.createParksOptions(res);
+          }
+        })
+    );
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS)
@@ -71,9 +89,48 @@ export class MetricsFilterComponent extends BaseFormComponent {
       exportBusiestDays: new UntypedFormControl(this.data.exportBusiestDays),
     });
     super.updateForm();
+    super.addDisabledRule(
+      this.fields.facility,
+      () => {
+        return this.fields.park.value ? false : true;
+      },
+      this.fields.park.valueChanges
+    );
   }
 
   async onSubmit() {
     let res = await super.submit();
+  }
+
+  createParksOptions(list) {
+    for (const park of Object.keys(list)) {
+      this.parkOptions.push({ value: park, display: list[park].name });
+    }
+  }
+
+  createFacilityOptions(list) {
+    for (const facility of Object.keys(list)) {
+      this.facilityOptions.push({
+        value: list[facility].sk,
+        display: list[facility].facilityName,
+      });
+    }
+  }
+
+  parkChange(event) {
+    if (this.parkFacilitiesList) {
+      const selectedPark = this.parkFacilitiesList[this.fields?.park?.value];
+      if (selectedPark) {
+        this.facilityOptions = [];
+        for (const facility of Object.keys(selectedPark.facilities)) {
+          this.facilityOptions.push({
+            value: selectedPark.facilities[facility].sk,
+            display: selectedPark.facilities[facility].name,
+          });
+        }
+        // this.fields.park.setValue(selectedPark, {emitEvent: false});
+        this.fields.facility.setValue(this.facilityOptions[0]?.value || null);
+      }
+    }
   }
 }

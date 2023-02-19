@@ -1,11 +1,8 @@
 import {
   Component,
   Input,
-  OnInit,
-  OnDestroy,
 } from '@angular/core';
 import { Utils } from '../../../utils/utils';
-import { Subscription } from 'rxjs';
 import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
@@ -15,19 +12,28 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 })
 export class ShortdatePickerComponent
   extends BaseInputComponent
-  implements OnInit, OnDestroy
 {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() range: boolean = false;
 
-  private subscriptions = new Subscription();
-
   public modelDate;
 
   private utils = new Utils();
 
-  ngOnInit() {
+  constructor(
+  ){
+    super();
+    this.subscriptions.add(
+      this.controlInitialized.subscribe((value) => {
+        if (value) {
+          this.initializeControl();
+        }
+      })
+    )
+  }
+
+  initializeControl() {
     this.modelDate = this.control?.value || null;
     this.subscriptions.add(
       this.control.valueChanges.subscribe((res) => {
@@ -50,9 +56,5 @@ export class ShortdatePickerComponent
     this.modelDate = null as any;
     this.control.setValue(null);
     this.control.markAsDirty();
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 }
