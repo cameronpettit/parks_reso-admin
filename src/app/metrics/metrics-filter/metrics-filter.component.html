@@ -1,0 +1,30 @@
+<form [formGroup]="form">
+  <div class="row d-flex justify-content-between">
+    <app-radio-buttons
+      class="col-md-3 col-sm-12 mb-2 mb-md-0"
+      [control]="fields?.timeSpan"
+      [options]="timeSpanOptions"
+      [optionsLabels]="timeSpanLabels"
+      [group]="false"
+      [id]="'timeSpan'"
+    ></app-radio-buttons>
+    <div class="col">
+      <div class="d-flex flex-column flex-md-row justify-content-end">
+        <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true">
+        </app-shortdate-picker>
+        <button
+          class="mb-2 mb-md-0 me-md-2 btn btn-outline-primary"
+          id="metrics-filters-dropdown"
+          dropdownToggle
+          aria-controls="metrics-filters-dropdown"
+        >
+          <i class="bi bi-list"></i> Open Filters
+        </button>
+        <button class="mb-2 mb-md-0 me-md-2 btn btn-primary">Download Charts</button>
+        <button class="mb-2 mb-md-0 btn btn-primary">Export .csv</button>
+      </div>
+    </div>
+  </div>
+</form>
+<button class="btn btn-success" (click)="onSubmit()">Submit</button>
+

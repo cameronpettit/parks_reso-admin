@@ -16,6 +16,7 @@ export class Constants {
     PASS_BREAKDOWN_BY_STATUS: 'pass-breakdown-by-status',
     PASS_QR_CODE: 'pass-qr-code',
     MODIFIERS: 'modifiers',
+    METRICS_FILTERS_PARAMS: 'metrics-filters-params'
   };
 
   public static readonly ToastTypes: any = {

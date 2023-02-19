@@ -19,6 +19,7 @@ export class ShortdatePickerComponent
 {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
+  @Input() range: boolean = false;
 
   private subscriptions = new Subscription();
 
@@ -45,6 +46,7 @@ export class ShortdatePickerComponent
   }
 
   clearDate() {
+    console.log('cleared');
     this.modelDate = null as any;
     this.control.setValue(null);
     this.control.markAsDirty();
