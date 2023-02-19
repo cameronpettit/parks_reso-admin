@@ -133,4 +133,21 @@ export class MetricsFilterComponent extends BaseFormComponent {
       }
     }
   }
+
+  selectAllExports(select: boolean) {
+    console.log('select:', select);
+    if (select) {
+      this.fields.exportBusiestDays.setValue(true);
+      this.fields.exportPassActivityByDay.setValue(true);
+      this.fields.exportPassTrendsByHour.setValue(true);
+      this.fields.exportPassBreakdownByStatus.setValue(true);
+      this.fields.exportReturningGuests.setValue(true);
+    } else {
+      this.fields.exportBusiestDays.setValue(false);
+      this.fields.exportPassActivityByDay.setValue(false);
+      this.fields.exportPassTrendsByHour.setValue(false);
+      this.fields.exportPassBreakdownByStatus.setValue(false);
+      this.fields.exportReturningGuests.setValue(false);
+    }
+  }
 }
